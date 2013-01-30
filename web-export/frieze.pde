@@ -1,47 +1,47 @@
 //-----------------Globals
 Frieze freeze = new Frieze(25.0, 50.0);
 float ycounter = 0;
-
+int num = 35;
 //-----------------Setup
 void setup() {
   size(1000, 600, P2D);
   background(0);
   stroke(255);
-  //fill(128);
   noFill();
   smooth();
-  strokeWeight(5);
-  for (int i = 0; i < 40; i++) {
+  strokeWeight(3);
+  translate(0,50);
+  for (int i = 0; i < num; i++) {
     freeze.hop();
   }
   translate(0, 1.5*freeze.cell_height);
   freeze.current_pos = 0;
-  for (int i = 0; i < 40; i++) {
+  for (int i = 0; i <= num; i++) {
     freeze.step();
   }
   translate(0, 1.5*freeze.cell_height);
   freeze.current_pos = 0;
-  for (int i = 0; i < 40; i++) {
+  for (int i = 0; i <= num; i++) {
     freeze.jump();
   }
   translate(0, 1.5*freeze.cell_height);
   freeze.current_pos = 0;
-  for (int i = 0; i < 40; i++) {
+  for (int i = 0; i <= num/2; i++) {
     freeze.sidle();
   }
   translate(0, 1.5*freeze.cell_height);
   freeze.current_pos = 0;
-  for (int i = 0; i < 40; i++) {
+  for (int i = 0; i <= num; i++) {
     freeze.spin_hop();
   }
   translate(0, 1.5*freeze.cell_height);
   freeze.current_pos = 0;
-  for (int i = 0; i < 40; i++) {
+  for (int i = 0; i <= num; i++) {
     freeze.spin_jump();
   }
   translate(0, 1.5*freeze.cell_height);
   freeze.current_pos = 0;
-  for (int i = 0; i < 40; i++) {
+  for (int i = 0; i <= num/2; i++) {
     freeze.spin_sidle();
   }
 }
@@ -62,7 +62,7 @@ class Frieze {
   void primitive() {
     /*This is the primitive cell and should be added by extending this class*/
     line(-this.cell_width/2, -this.cell_height/2, this.cell_width/2, this.cell_height/2);
-    line(0, 0, -this.cell_width/2, this.cell_height/2);
+    ellipse(-this.cell_width/2,-this.cell_height/2, this.cell_width/4, this.cell_height/4);
   }
 
   void hop() {
@@ -152,7 +152,12 @@ class Frieze {
     /*Vertical Reflection + Translation*/
     this.current_pos += this.cell_width;
     this.current_angle += PI;
-    translate(this.current_pos, 0);
+    if(this.current_angle % TWO_PI != 0) {
+      translate(this.current_pos + this.cell_width, 0);
+    }
+    else {
+      translate(this.current_pos,0);
+    }
     rotate(this.current_angle);
     primitive();
     this.current_pos += this.cell_width;
