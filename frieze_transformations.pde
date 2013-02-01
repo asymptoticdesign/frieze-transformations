@@ -12,7 +12,6 @@ void setup() {
   smooth();
   strokeWeight(3);
   seven_friezes();
-  saveFrame("seven_friezes.png");
 }
 
 //-----------------Defined Functions
