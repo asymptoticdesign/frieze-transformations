@@ -1,68 +1,71 @@
 //-----------------Globals
-MyFrieze freeze = new MyFrieze(25.0, 50.0);
+MyFrieze freeze = new MyFrieze(10.0, 20.0);
 float ycounter = 0;
 int num = 36;
+int counter;
+int selector;
 
 //-----------------Setup
 void setup() {
-  size(1000, 600);
+  size(1024, 768);
   background(0);
   stroke(255);
   noFill();
   smooth();
-  strokeWeight(3);
-  /*
-  while(ycounter < height) {
+  deep_frieze();
+}
+
+void draw() {
+}
+
+void keyPressed() {
+  if (key == 'c') {
+    background(0);
+  }
+  if (key == ' ') {
+    deep_frieze();
+  }
+}
+
+//-----------------Defined Functions
+void deep_frieze() {
+  pushMatrix();
+  translate(-freeze.cell_height/2, 0);
+  while (ycounter < height) {
     pushMatrix();
-    translate(0,ycounter);
-    for(int i = 0; i < 38; i++) {
-      freeze.spin_sidle();
-    }
+    translate(0, ycounter);
+    random_frieze();
     ycounter += freeze.cell_height;
     freeze.current_pos = 0;
     popMatrix();
   }
-  */
-  seven_friezes();
-  saveFrame("seven_friezes.png");
+  ycounter = 0;
+  popMatrix();
+  saveFrame("deepfrieze-####.png");
 }
 
-//-----------------Defined Functions
-void seven_friezes() {
-  translate(0, 50);
-  for (int i = 0; i < num; i++) {
-    freeze.hop();
+void random_frieze() {
+  while (counter < 40) {
+    selector = int(random(7));
+    switch(selector) {
+    case 0:
+      freeze.hop();
+    case 1:
+      freeze.step();
+    case 2:
+      freeze.jump();
+    case 3:
+      freeze.sidle();
+    case 4:
+      freeze.spin_hop();
+    case 5:
+      freeze.spin_jump();
+    case 6:
+      freeze.spin_sidle();
+    }
+    counter++;
   }
-  translate(0, 1.5*freeze.cell_height);
-  freeze.current_pos = 0;
-  for (int i = 0; i <= num; i++) {
-    freeze.step();
-  }
-  translate(0, 1.5*freeze.cell_height);
-  freeze.current_pos = 0;
-  for (int i = 0; i <= num; i++) {
-    freeze.jump();
-  }
-  translate(0, 1.5*freeze.cell_height);
-  freeze.current_pos = 0;
-  for (int i = 0; i <= num/2; i++) {
-    freeze.sidle();
-  }
-  translate(0, 1.5*freeze.cell_height);
-  freeze.current_pos = 0;
-  for (int i = 0; i <= num; i++) {
-    freeze.spin_hop();
-  }
-  translate(0, 1.5*freeze.cell_height);
-  freeze.current_pos = 0;
-  for (int i = 0; i <= num; i++) {
-    freeze.spin_jump();
-  }
-  translate(0, 1.5*freeze.cell_height);
-  freeze.current_pos = 0;
-  for (int i = 0; i <= num/2; i++) {
-    freeze.spin_sidle();
-  }
+  counter = 0;
 }
 
 //-------------------------Classes
@@ -79,6 +82,6 @@ class MyFrieze extends Frieze {
     /*This is the primitive cell and should be added by extending this class*/
     line(-this.cell_width/2, -this.cell_height/2, this.cell_width/2, this.cell_height/2);
     ellipse(-this.cell_width/2, -this.cell_height/2, this.cell_width/4, this.cell_height/4);
-  }  
+  }
 }
 
