@@ -11,13 +11,20 @@ void setup() {
   noFill();
   smooth();
   strokeWeight(3);
-  while (ycounter < height) {
-    translate(0, ycounter);
-    for (int i = 0; i < 38; i++) {
-      freeze.hop;
+  /*
+  while(ycounter < height) {
+    pushMatrix();
+    translate(0,ycounter);
+    for(int i = 0; i < 38; i++) {
+      freeze.spin_sidle();
     }
-    ycounter += MyFrieze.cell_height;
+    ycounter += freeze.cell_height;
+    freeze.current_pos = 0;
+    popMatrix();
   }
+  */
+  seven_friezes();
+  saveFrame("seven_friezes.png");
 }
 
 //-----------------Defined Functions
@@ -60,6 +67,7 @@ void seven_friezes() {
 
 //-------------------------Classes
 //Frieze is an abstract class, so we need to implement our own subclass.
+
 class MyFrieze extends Frieze {
   //implement a constructor that just calls the super class' constructor.
   MyFrieze(float cell_width, float cell_height) {
@@ -71,7 +79,7 @@ class MyFrieze extends Frieze {
     /*This is the primitive cell and should be added by extending this class*/
     line(-this.cell_width/2, -this.cell_height/2, this.cell_width/2, this.cell_height/2);
     ellipse(-this.cell_width/2, -this.cell_height/2, this.cell_width/4, this.cell_height/4);
-  }
+  }  
 }
 
 abstract class Frieze {

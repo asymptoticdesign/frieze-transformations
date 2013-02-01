@@ -11,7 +11,20 @@ void setup() {
   noFill();
   smooth();
   strokeWeight(3);
+  /*
+  while(ycounter < height) {
+    pushMatrix();
+    translate(0,ycounter);
+    for(int i = 0; i < 38; i++) {
+      freeze.spin_sidle();
+    }
+    ycounter += freeze.cell_height;
+    freeze.current_pos = 0;
+    popMatrix();
+  }
+  */
   seven_friezes();
+  saveFrame("seven_friezes.png");
 }
 
 //-----------------Defined Functions
