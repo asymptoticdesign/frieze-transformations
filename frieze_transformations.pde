@@ -54,6 +54,7 @@ void seven_friezes() {
 
 //-------------------------Classes
 //Frieze is an abstract class, so we need to implement our own subclass.
+
 class MyFrieze extends Frieze {
   //implement a constructor that just calls the super class' constructor.
   MyFrieze(float cell_width, float cell_height) {
@@ -65,6 +66,6 @@ class MyFrieze extends Frieze {
     /*This is the primitive cell and should be added by extending this class*/
     line(-this.cell_width/2, -this.cell_height/2, this.cell_width/2, this.cell_height/2);
     ellipse(-this.cell_width/2, -this.cell_height/2, this.cell_width/4, this.cell_height/4);
-  }
+  }  
 }
 

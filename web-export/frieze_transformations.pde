@@ -11,7 +11,13 @@ void setup() {
   noFill();
   smooth();
   strokeWeight(3);
-  seven_friezes();
+  while (ycounter < height) {
+    translate(0, ycounter);
+    for (int i = 0; i < 38; i++) {
+      freeze.hop;
+    }
+    ycounter += MyFrieze.cell_height;
+  }
 }
 
 //-----------------Defined Functions
