@@ -1,16 +1,22 @@
 //-----------------Globals
-Frieze freeze = new Frieze(25.0, 50.0);
+MyFrieze freeze = new MyFrieze(25.0, 50.0);
 float ycounter = 0;
-int num = 35;
+int num = 36;
+
 //-----------------Setup
 void setup() {
-  size(1000, 600, P2D);
+  size(1000, 600);
   background(0);
   stroke(255);
   noFill();
   smooth();
   strokeWeight(3);
-  translate(0,50);
+  seven_friezes();
+}
+
+//-----------------Defined Functions
+void seven_friezes() {
+  translate(0, 50);
   for (int i = 0; i < num; i++) {
     freeze.hop();
   }
@@ -46,33 +52,41 @@ void setup() {
   }
 }
 
-//-----------------Defined Classes
-class Frieze {
+//-------------------------Classes
+//Frieze is an abstract class, so we need to implement our own subclass.
+class MyFrieze extends Frieze {
+  //implement a constructor that just calls the super class' constructor.
+  MyFrieze(float cell_width, float cell_height) {
+    super(cell_width, cell_height);
+  }
+
+  //define the previously abstract method primitive();
+  void primitive() {
+    /*This is the primitive cell and should be added by extending this class*/
+    line(-this.cell_width/2, -this.cell_height/2, this.cell_width/2, this.cell_height/2);
+    ellipse(-this.cell_width/2, -this.cell_height/2, this.cell_width/4, this.cell_height/4);
+  }
+}
+
+abstract class Frieze {
   float cell_height;
   float cell_width;
   float current_pos;
   int current_scale = 1;
-  float current_angle;
+  boolean rotate = false;
 
   Frieze(float cell_width, float cell_height) {
     this.cell_height = cell_height;
     this.cell_width = cell_width;
   }
 
-  void primitive() {
-    /*This is the primitive cell and should be added by extending this class*/
-    line(-this.cell_width/2, -this.cell_height/2, this.cell_width/2, this.cell_height/2);
-    ellipse(-this.cell_width/2,-this.cell_height/2, this.cell_width/4, this.cell_height/4);
-  }
+  abstract void primitive();
 
   void hop() {
     pushMatrix();
     translate(this.cell_width/2, this.cell_height/2);
-    /*Just a translation along the x-axis*/
     this.current_pos += this.cell_width;
-    //move over to next cell
     translate(this.current_pos, 0);
-    //draw primitive shape
     primitive();
     popMatrix();
   }
@@ -80,14 +94,10 @@ class Frieze {
   void step() {
     pushMatrix();
     translate(this.cell_width/2, this.cell_height/2);
-    /*Translation + reflection across horizontal axis (glide)*/
     this.current_pos += this.cell_width;
     this.current_scale *= -1;
-    //move over to next cell
     translate(this.current_pos, 0);
-    //mirror from previous step
     scale(1, this.current_scale);
-    //draw primitive shape
     primitive();
     popMatrix();
   }
@@ -95,7 +105,6 @@ class Frieze {
   void jump() {
     pushMatrix();
     translate(this.cell_width/2, this.cell_height/2);
-    /*Horizontal Reflection + Translation*/
     this.current_pos += this.cell_width;
     translate(this.current_pos, 0);
     primitive();
@@ -107,7 +116,6 @@ class Frieze {
   void sidle() {
     pushMatrix();
     translate(this.cell_width/2, this.cell_height/2);
-    /*Vertical Reflection + Translation*/
     this.current_pos += this.cell_width;
     translate(this.current_pos, 0);
     primitive();
@@ -121,12 +129,13 @@ class Frieze {
   void spin_hop() {
     pushMatrix();
     translate(this.cell_width/2, this.cell_height/2);
-    /*Just a translation along the x-axis*/
     this.current_pos += this.cell_width;
-    this.current_angle += PI;
+    this.rotate = !this.rotate;
     //move over to next cell
     translate(this.current_pos, 0);
-    rotate(this.current_angle);
+    if (this.rotate) {
+      rotate(PI);
+    }
     //draw primitive shape
     primitive();
     popMatrix();
@@ -135,11 +144,12 @@ class Frieze {
   void spin_jump() {
     pushMatrix();
     translate(this.cell_width/2, this.cell_height/2);
-    /*Horizontal Reflection + Translation*/
     this.current_pos += this.cell_width;
-    this.current_angle += PI;
+    this.rotate = !this.rotate;
     translate(this.current_pos, 0);
-    rotate(this.current_angle);
+    if (this.rotate) {
+      rotate(PI);
+    }
     primitive();
     scale(1, -1);
     primitive();
@@ -147,19 +157,19 @@ class Frieze {
   }
 
   void spin_sidle() {
-    pushMatrix();
-    translate(this.cell_width/2, this.cell_height/2);
-    /*Vertical Reflection + Translation*/
     this.current_pos += this.cell_width;
-    this.current_angle += PI;
-    if(this.current_angle % TWO_PI != 0) {
-      translate(this.current_pos + this.cell_width, 0);
-    }
-    else {
-      translate(this.current_pos,0);
-    }
-    rotate(this.current_angle);
+    this.rotate = !this.rotate;
+    pushMatrix();
+    //translate to center of cell
+    translate(this.cell_width/2, this.cell_height/2);
+    translate(this.current_pos, 0);
+    //rotate, draw cells
+    if (this.rotate) {
+      translate(this.cell_width, 0);
+      rotate(PI);
+    }  
     primitive();
+    //draw mirror
     this.current_pos += this.cell_width;
     translate(this.cell_width, 0);
     scale(-1, 1);
@@ -167,5 +177,4 @@ class Frieze {
     popMatrix();
   }
 }
-
 

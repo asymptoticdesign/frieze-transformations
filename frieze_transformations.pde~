@@ -1,16 +1,71 @@
-abstract class Frieze {
+//-----------------Globals
+Frieze freeze = new Frieze(25.0, 50.0);
+float ycounter = 0;
+int num = 36;
+
+//-----------------Setup
+void setup() {
+  size(1000, 600);
+  background(0);
+  stroke(255);
+  noFill();
+  smooth();
+  strokeWeight(3);
+  translate(0, 50);
+  for (int i = 0; i < num; i++) {
+    freeze.hop();
+  }
+  translate(0, 1.5*freeze.cell_height);
+  freeze.current_pos = 0;
+  for (int i = 0; i <= num; i++) {
+    freeze.step();
+  }
+  translate(0, 1.5*freeze.cell_height);
+  freeze.current_pos = 0;
+  for (int i = 0; i <= num; i++) {
+    freeze.jump();
+  }
+  translate(0, 1.5*freeze.cell_height);
+  freeze.current_pos = 0;
+  for (int i = 0; i <= num/2; i++) {
+    freeze.sidle();
+  }
+  translate(0, 1.5*freeze.cell_height);
+  freeze.current_pos = 0;
+  for (int i = 0; i <= num; i++) {
+    freeze.spin_hop();
+  }
+  translate(0, 1.5*freeze.cell_height);
+  freeze.current_pos = 0;
+  for (int i = 0; i <= num; i++) {
+    freeze.spin_jump();
+  }
+  translate(0, 1.5*freeze.cell_height);
+  freeze.current_pos = 0;
+  for (int i = 0; i <= num/2; i++) {
+    freeze.spin_sidle();
+  }
+  saveFrame("seven-friezes.png");
+}
+
+//-----------------Defined Classes
+class Frieze {
   float cell_height;
   float cell_width;
   float current_pos;
   int current_scale = 1;
-  boolean rotate = false;
+  boolean rotate;
 
   Frieze(float cell_width, float cell_height) {
     this.cell_height = cell_height;
     this.cell_width = cell_width;
   }
 
-  abstract void primitive();
+  void primitive() {
+    /*This is the primitive cell and should be added by extending this class*/
+    line(-this.cell_width/2, -this.cell_height/2, this.cell_width/2, this.cell_height/2);
+    ellipse(-this.cell_width/2, -this.cell_height/2, this.cell_width/4, this.cell_height/4);
+  }
 
   void hop() {
     pushMatrix();
@@ -107,3 +162,4 @@ abstract class Frieze {
     popMatrix();
   }
 }
+
